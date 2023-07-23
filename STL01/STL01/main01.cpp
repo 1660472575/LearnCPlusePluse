@@ -6,8 +6,85 @@
 
 using namespace std;
 
+/******************* text begin *************************/
+#if 0
+// 评委打分：10个评委分别给5个选手打分，去掉最高分和最低分，最后获得平均分；
+// 练习：string, vector, deque
+class Person
+{
+public:
+    Person(string name, int score)
+    {
+        this->m_name = name;
+        this->m_score = score;
+    }
+    string m_name;
+    int m_score;
+};
+void createPerson(vector<Person> &v)
+{
+    string nameList = "ABCDE";
+    for(int i = 0;i < 5;i++)
+    {
+        string name = string("Person") + nameList[i];
+        int score = 0;
+        v.push_back(Person(name, score));
+    }
+}
+void setScore(vector<Person> &v)
+{
+    for(vector<Person>::iterator it = v.begin();it!=v.end();it++)
+    {
+        deque<int> ds;
+        int av_score = 0;
+        for(int i = 0;i < 10;i++)
+        {
+            av_score = rand() % 41 + 60;
+            ds.push_back(av_score);
+        }
+        sort(ds.begin(), ds.end());
+        ds.pop_back();
+        ds.pop_front();
+        av_score = 0;
+        for(int i =0;i < (int)ds.size();i++)
+        {
+            av_score += ds.at(i);
+        }
+        av_score /= ds.size();
+        it->m_score = av_score;
+    }
+}
+void showScore(const vector<Person> &v)
+{
+    for(vector<Person>::const_iterator it=v.begin();it!=v.end();it++)
+    {
+        cout << "Name: " << it->m_name << " av_score: " << it->m_score << endl;
+    }
+}
+void test()
+{
+    vector<Person> v;
+    // 1，创建五个选手
+    createPerson(v);
+    // 2. 给五个选手打分
+    setScore(v);
+    //3. 展示最终分数
+    showScore(v);
+}
+
+int main(void)
+{
+    // 添加随机数种子
+    srand((unsigned int)(time(NULL)));
+    test();
+    cout << "hello deque " << endl;
+    return 0;
+}
+#endif
+/******************* text end *************************/
+
 /******************* deque begin *************************/
-#if 1
+#if 0
 void printDeque(const deque<int>& d)
 {
     for(deque<int>::const_iterator it = d.begin();it != d.end();it++)
@@ -19,18 +96,82 @@ void printDeque(const deque<int>& d)
 // deque类似双端数组
 void test01()
 {
+    // deque构造函数
     deque<int> d;
     for(int i=0;i<10;i++)
     {
         d.push_back(i);
     }
     printDeque(d);
+    /*
+    deque赋值操作：
+    */
+    deque<int> d1;
+    d1 = d;
+    cout << "print d1: " << endl;
+    printDeque(d1);
+    deque<int> d2;
+    d2.assign(d1.begin(), d1.end());
+    deque<int> d3(10, 100);
+    printDeque(d3);
+    // 大小操作：
+//    d1.empty();
+//    d1.size();
+//    d1.resize();
+}
+
+void test02()
+{
+    // deque容器的插入和删除操作：
+    deque<int> d;
+    for(int i=0;i< 10;i++)
+    {
+        d.push_front(i);
+    }
+    printDeque(d);
+    // 下面注意函数重载
+    // 两端操作：
+//    d.push_back()
+//    d.push_front()
+//    d.pop_back()
+//    d.pop_front()
+    // 指定位置操作：
+//    d.insert()
+//    d.clear()
+//    d.erase()
+}
+void test03()
+{
+    // deque容器数据存取操作：
+    // at()
+    // [] 类似数组操作
+    // front() , back()
+    deque<int> d;
+    for(int i=0;i<10;i++)
+    {
+        d.push_back(i);
+    }
+    printDeque(d);
+    cout << "d[2]: " << d[2] << endl;
+    cout << "d.at(2): " << d.at(2) << endl;
+    cout <<"d.front(): " << d.front() << endl;
+    cout << "d.back(): " << d.back() << endl;
+    // deque容器排序 sort()
+    // vector也支持sort()排序
+    d.at(2) = 20;
+    d[6] = 13;
+    cout << "random insert val: " <<endl;
+    printDeque(d);
+    cout << "after sort: " << endl;
+    sort(d.begin(), d.end());
+    printDeque(d);
 }
 
 int main(void)
 {
-    test01();
-
+//    test01();
+//    test02();
+    test03();
     cout << "hello deque " << endl;
     return 0;
 }
